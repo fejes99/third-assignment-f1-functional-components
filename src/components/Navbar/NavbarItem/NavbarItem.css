@@ -1,0 +1,26 @@
+.navbar-item {
+  font-size: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 220px;
+  height: inherit;
+  transition: all 0.4s;
+}
+
+.navbar-item:hover {
+  background-color: black;
+}
+
+.navbar-item a {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+.navbar-item a.active {
+  color: white;
+  font-weight: bold;
+}
