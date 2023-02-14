@@ -12,7 +12,6 @@ class App extends Component {
     return (
       <div className='App'>
         <Navbar />
-        <div>Hello world</div>
         <Switch>
           <Route path='/drivers' component={Drivers} />
           <Route path='/teams' component={Teams} />
