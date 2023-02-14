@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
-import './Drivers.css';
+import './Constructors.css';
 
-export class Drivers extends Component {
+export class Constructors extends Component {
   state = {
-    driverStandings: [],
+    constructorStandings: [],
     round: 0,
     year: 2013,
     loading: true,
   };
   componentDidMount() {
     axios
-      .get(`http://ergast.com/api/f1/${this.state.year}/driverStandings.json`)
+      .get(
+        `http://ergast.com/api/f1/${this.state.year}/constructorStandings.json`
+      )
       .then((res) => {
         const data = res.data.MRData.StandingsTable.StandingsLists[0];
         this.setState({
-          driverStandings: data.DriverStandings,
+          constructorStandings: data.ConstructorStandings,
           round: data.round,
           loading: false,
         });
@@ -24,8 +26,10 @@ export class Drivers extends Component {
   }
   render() {
     return (
-      <div className='drivers'>
-        <h1 className='drivers-title'>{this.state.year} Driver Standings</h1>
+      <div className='constructors'>
+        <h1 className='constructors-title'>
+          {this.state.year} Constructor Standings
+        </h1>
         {this.state.loading ? (
           <BeatLoader color='#353a40' />
         ) : (
@@ -33,22 +37,18 @@ export class Drivers extends Component {
             <thead>
               <tr>
                 <th>Pos</th>
-                <th>Driver</th>
-                <th>Nationality</th>
                 <th>Team</th>
+                <th>Nationality</th>
                 <th>Wins</th>
                 <th>Pts</th>
               </tr>
             </thead>
             <tbody>
-              {this.state.driverStandings.map((result) => (
+              {this.state.constructorStandings.map((result) => (
                 <tr key={result.position}>
                   <td>{result.position}</td>
-                  <td>
-                    {result.Driver.givenName + ' ' + result.Driver.familyName}
-                  </td>
-                  <td>{result.Driver.nationality}</td>
-                  <td>{result.Constructors[0].name}</td>
+                  <td>{result.Constructor.name}</td>
+                  <td>{result.Constructor.nationality}</td>
                   <td>{result.wins}</td>
                   <td>{result.points}</td>
                 </tr>
@@ -61,4 +61,4 @@ export class Drivers extends Component {
   }
 }
 
-export default Drivers;
+export default Constructors;

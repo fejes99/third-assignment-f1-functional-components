@@ -1,0 +1,10 @@
+.races {
+  padding: 50px;
+}
+
+.races-title {
+  text-align: left;
+  padding-left: 10%;
+  padding-bottom: 30px;
+  text-transform: uppercase;
+}

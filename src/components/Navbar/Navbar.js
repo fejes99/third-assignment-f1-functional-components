@@ -10,7 +10,7 @@ const navigationItems = [
   },
   {
     name: 'Constructors',
-    link: '/teams',
+    link: '/constructors',
   },
   {
     name: 'Races',
