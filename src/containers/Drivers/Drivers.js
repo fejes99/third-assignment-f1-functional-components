@@ -15,16 +15,19 @@ export class Drivers extends Component {
       .get(`http://ergast.com/api/f1/${this.state.year}/driverStandings.json`)
       .then((res) => {
         const data = res.data.MRData.StandingsTable.StandingsLists[0];
-        this.setState(
-          {
-            driverStandings: data.DriverStandings,
-            round: data.round,
-            loading: false,
-          },
-          () => console.log(this.state)
-        );
+        this.setState({
+          driverStandings: data.DriverStandings,
+          round: data.round,
+          loading: false,
+        });
       });
   }
+
+  driverDetailsHandler = (driverId) => {
+    const { year } = this.state;
+    this.props.history.push(`/drivers/${driverId}?year=${year}`);
+  };
+
   render() {
     return (
       <div className='drivers'>
@@ -47,7 +50,11 @@ export class Drivers extends Component {
               {this.state.driverStandings.map((result) => (
                 <tr key={result.position}>
                   <td>{result.position}</td>
-                  <td>
+                  <td
+                    onClick={() =>
+                      this.driverDetailsHandler(result.Driver.driverId)
+                    }
+                  >
                     {result.Driver.givenName + ' ' + result.Driver.familyName}
                   </td>
                   <td>{result.Driver.nationality}</td>

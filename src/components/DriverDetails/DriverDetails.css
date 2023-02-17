@@ -1,0 +1,45 @@
+.driver-details-container {
+  margin: 0;
+  padding: 30px 30px;
+  background-color: white;
+}
+
+.driver-details {
+  display: flex;
+  width: 100%;
+}
+
+.profile {
+  flex-basis: 50%;
+}
+
+.stats {
+  flex-basis: 50%;
+}
+
+.stats a {
+  text-decoration: none;
+  color: inherit;
+}
+
+td.position-1 {
+  background-color: #ffd700;
+}
+
+td.position-2 {
+  background-color: #d3d3d3;
+}
+
+td.position-3 {
+  background-color: #ff8c00;
+}
+
+td.position-4 {
+  background-color: #90ee90;
+}
+
+td[class^='position-']:not(.position-1):not(.position-2):not(.position-3):not(
+    .position-4
+  ) {
+  background-color: #f5f5f5;
+}

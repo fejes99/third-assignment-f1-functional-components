@@ -6,6 +6,7 @@ import Drivers from './containers/Drivers/Drivers';
 import Constructors from './containers/Constructors/Constructors';
 import Races from './containers/Races/Races';
 import Navbar from './components/Navbar/Navbar';
+import DriverDetails from './components/DriverDetails/DriverDetails';
 
 class App extends Component {
   render() {
@@ -15,7 +16,8 @@ class App extends Component {
         <Switch>
           <div className='main'>
             <div className='wrapper'>
-              <Route path='/drivers' component={Drivers} />
+              <Route path='/drivers/:id' component={DriverDetails} />
+              <Route exact path='/drivers' component={Drivers} />
               <Route path='/constructors' component={Constructors} />
               <Route path='/races' component={Races} />
               <Route
