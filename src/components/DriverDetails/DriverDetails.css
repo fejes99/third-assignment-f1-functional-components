@@ -17,6 +17,23 @@
   flex-basis: 50%;
 }
 
+.table-stats {
+  max-width: 500px;
+}
+
+.table-stats tr {
+  background-color: inherit;
+}
+
+.table-stats td {
+  padding: 8px 0;
+  font-weight: normal;
+}
+
+.table-stats td:first-child {
+  font-weight: bold;
+}
+
 .stats a {
   text-decoration: none;
   color: inherit;

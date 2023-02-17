@@ -50,18 +50,38 @@ export class DriverDetails extends Component {
                 </h1>
               </div>
               <div className='stats'>
-                <div>Team: {driver.Constructors[0].name}</div>
-                <div>Points: {driver.points}</div>
-                <div>Championship Position: {driver.position}</div>
-                <div>
-                  {driver.wins !== '0' && <div>Wins: {driver.wins}</div>}
-                </div>
-                <div>
-                  Date of birth: {getFormattedDate(driver.Driver.dateOfBirth)}
-                </div>
-                <div>
-                  Bio: <a href={driver.Driver.url}>Wiki</a>
-                </div>
+                <table className='table-stats'>
+                  <tbody>
+                    <tr>
+                      <td>Team:</td>
+                      <td>{driver.Constructors[0].name}</td>
+                    </tr>
+                    <tr>
+                      <td>Points:</td>
+                      <td>{driver.points}</td>
+                    </tr>
+                    <tr>
+                      <td>Championship Position:</td>
+                      <td>{driver.position}</td>
+                    </tr>
+                    {driver.wins !== '0' && (
+                      <tr>
+                        <td>Wins:</td>
+                        <td>{driver.wins}</td>
+                      </tr>
+                    )}
+                    <tr>
+                      <td>Date of birth:</td>
+                      <td>{getFormattedDate(driver.Driver.dateOfBirth)}</td>
+                    </tr>
+                    <tr>
+                      <td>Bio:</td>
+                      <td>
+                        <a href={driver.Driver.url}>Wiki</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
