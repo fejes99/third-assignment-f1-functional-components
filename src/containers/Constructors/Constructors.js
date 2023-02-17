@@ -27,9 +27,7 @@ export class Constructors extends Component {
   render() {
     return (
       <div className='constructors'>
-        <h1 className='constructors-title'>
-          {this.state.year} Constructor Standings
-        </h1>
+        <h1 className='title'>{this.state.year} Constructor Standings</h1>
         {this.state.loading ? (
           <BeatLoader color='#353a40' />
         ) : (

@@ -15,17 +15,20 @@ export class Drivers extends Component {
       .get(`http://ergast.com/api/f1/${this.state.year}/driverStandings.json`)
       .then((res) => {
         const data = res.data.MRData.StandingsTable.StandingsLists[0];
-        this.setState({
-          driverStandings: data.DriverStandings,
-          round: data.round,
-          loading: false,
-        });
+        this.setState(
+          {
+            driverStandings: data.DriverStandings,
+            round: data.round,
+            loading: false,
+          },
+          () => console.log(this.state)
+        );
       });
   }
   render() {
     return (
       <div className='drivers'>
-        <h1 className='drivers-title'>{this.state.year} Driver Standings</h1>
+        <h1 className='title'>{this.state.year} Driver Standings</h1>
         {this.state.loading ? (
           <BeatLoader color='#353a40' />
         ) : (

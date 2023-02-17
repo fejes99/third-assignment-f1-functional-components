@@ -1,38 +1,5 @@
 .drivers {
-  padding: 50px;
-}
-
-.drivers-title {
-  text-align: left;
-  padding-left: 10%;
-  padding-bottom: 30px;
-  text-transform: uppercase;
-}
-
-table {
-  border-collapse: collapse;
-  text-align: center;
-  width: 80%;
-  margin: 0 auto;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 8px;
-  font-weight: 500;
-  /* border: 1px solid #ddd; */
-}
-
-th {
-  font-weight: 100;
+  margin: 0;
+  padding: 30px 30px;
   background-color: white;
-}
-
-tr:nth-child(odd) {
-  background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #ddd;
 }

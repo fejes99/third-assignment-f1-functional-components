@@ -13,10 +13,18 @@ class App extends Component {
       <div className='App'>
         <Navbar />
         <Switch>
-          <Route path='/drivers' component={Drivers} />
-          <Route path='/constructors' component={Constructors} />
-          <Route path='/races' component={Races} />
-          <Route exact path='/' component={() => <Redirect to='/drivers' />} />
+          <div className='main'>
+            <div className='wrapper'>
+              <Route path='/drivers' component={Drivers} />
+              <Route path='/constructors' component={Constructors} />
+              <Route path='/races' component={Races} />
+              <Route
+                exact
+                path='/'
+                component={() => <Redirect to='/drivers' />}
+              />
+            </div>
+          </div>
         </Switch>
       </div>
     );

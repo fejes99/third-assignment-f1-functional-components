@@ -25,7 +25,7 @@ export class Races extends Component {
   render() {
     return (
       <div className='races'>
-        <h1 className='races-title'>{this.state.year} Race Results</h1>
+        <h1 className='title'>{this.state.year} Race Results</h1>
         {this.state.loading ? (
           <BeatLoader color='#353a40' />
         ) : (
