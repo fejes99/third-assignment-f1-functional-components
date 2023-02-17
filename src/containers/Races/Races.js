@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 import './Races.css';
-import { getFormattedDate } from '../../helper';
+import {
+  getFormattedDate,
+  driverDetailsHandler,
+  constructorDetailsHandler,
+} from '../../helper';
 
 export class Races extends Component {
   state = {
@@ -24,7 +28,7 @@ export class Races extends Component {
   }
   render() {
     return (
-      <div className='races'>
+      <div className='container'>
         <h1 className='title'>{this.state.year} Race Results</h1>
         {this.state.loading ? (
           <BeatLoader color='#353a40' />
@@ -32,6 +36,7 @@ export class Races extends Component {
           <table>
             <thead>
               <tr>
+                <th>Round</th>
                 <th>Grand Prix</th>
                 <th>Circuit</th>
                 <th>Date</th>
@@ -44,15 +49,34 @@ export class Races extends Component {
             <tbody>
               {this.state.races.map((result) => (
                 <tr key={result.round}>
+                  <td>{result.round}</td>
                   <td>{result.raceName}</td>
                   <td>{result.Circuit.circuitName}</td>
                   <td>{getFormattedDate(result.date)}</td>
-                  <td>
+                  <td
+                    onClick={() =>
+                      driverDetailsHandler(
+                        this.props,
+                        result.Results[0].Driver.driverId,
+                        this.state.year
+                      )
+                    }
+                  >
                     {result.Results[0].Driver.givenName +
                       ' ' +
                       result.Results[0].Driver.familyName}
                   </td>
-                  <td>{result.Results[0].Constructor.name}</td>
+                  <td
+                    onClick={() =>
+                      constructorDetailsHandler(
+                        this.props,
+                        result.Results[0].Constructor.constructorId,
+                        this.state.year
+                      )
+                    }
+                  >
+                    {result.Results[0].Constructor.name}
+                  </td>
                   <td>{result.Results[0].laps}</td>
                   <td>{result.Results[0].Time.time}</td>
                 </tr>

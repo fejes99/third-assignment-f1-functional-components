@@ -5,3 +5,15 @@ export const getFormattedDate = (inputDate) => {
   const year = date.getFullYear();
   return `${day} ${month} ${year}`;
 };
+
+export const driverDetailsHandler = (props, driverId, year) => {
+  props.history.push(`/drivers/${driverId}?year=${year}`);
+};
+
+export const constructorDetailsHandler = (props, constructorId, year) => {
+  props.history.push(`/constructors/${constructorId}?year=${year}`);
+};
+
+export const sumPoints = (firstDriver, secondDriver) => {
+  return Number(firstDriver) + Number(secondDriver);
+};

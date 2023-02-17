@@ -3,7 +3,7 @@ import './RaceDetails.css';
 
 export class RaceDetails extends Component {
   render() {
-    return <div>RaceDetails</div>;
+    return <div className='container'></div>;
   }
 }
 

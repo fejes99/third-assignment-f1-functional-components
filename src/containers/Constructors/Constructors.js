@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 import './Constructors.css';
+import { constructorDetailsHandler } from '../../helper';
 
 export class Constructors extends Component {
   state = {
@@ -24,9 +25,10 @@ export class Constructors extends Component {
         });
       });
   }
+
   render() {
     return (
-      <div className='constructors'>
+      <div className='container'>
         <h1 className='title'>{this.state.year} Constructor Standings</h1>
         {this.state.loading ? (
           <BeatLoader color='#353a40' />
@@ -45,7 +47,17 @@ export class Constructors extends Component {
               {this.state.constructorStandings.map((result) => (
                 <tr key={result.position}>
                   <td>{result.position}</td>
-                  <td>{result.Constructor.name}</td>
+                  <td
+                    onClick={() =>
+                      constructorDetailsHandler(
+                        this.props,
+                        result.Constructor.constructorId,
+                        this.state.year
+                      )
+                    }
+                  >
+                    {result.Constructor.name}
+                  </td>
                   <td>{result.Constructor.nationality}</td>
                   <td>{result.wins}</td>
                   <td>{result.points}</td>

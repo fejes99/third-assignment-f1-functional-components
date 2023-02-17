@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 import './Drivers.css';
+import { constructorDetailsHandler, driverDetailsHandler } from '../../helper';
 
 export class Drivers extends Component {
   state = {
@@ -23,14 +24,9 @@ export class Drivers extends Component {
       });
   }
 
-  driverDetailsHandler = (driverId) => {
-    const { year } = this.state;
-    this.props.history.push(`/drivers/${driverId}?year=${year}`);
-  };
-
   render() {
     return (
-      <div className='drivers'>
+      <div className='container'>
         <h1 className='title'>{this.state.year} Driver Standings</h1>
         {this.state.loading ? (
           <BeatLoader color='#353a40' />
@@ -52,13 +48,27 @@ export class Drivers extends Component {
                   <td>{result.position}</td>
                   <td
                     onClick={() =>
-                      this.driverDetailsHandler(result.Driver.driverId)
+                      driverDetailsHandler(
+                        this.props,
+                        result.Driver.driverId,
+                        this.state.year
+                      )
                     }
                   >
                     {result.Driver.givenName + ' ' + result.Driver.familyName}
                   </td>
                   <td>{result.Driver.nationality}</td>
-                  <td>{result.Constructors[0].name}</td>
+                  <td
+                    onClick={() =>
+                      constructorDetailsHandler(
+                        this.props,
+                        result.Constructors[0].constructorId,
+                        this.state.year
+                      )
+                    }
+                  >
+                    {result.Constructors[0].name}
+                  </td>
                   <td>{result.wins}</td>
                   <td>{result.points}</td>
                 </tr>
