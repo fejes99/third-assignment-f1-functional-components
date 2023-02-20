@@ -3,7 +3,11 @@ import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 
 import './DriverDetails.css';
-import { constructorDetailsHandler, getFormattedDate } from '../../helper';
+import {
+  constructorDetailsHandler,
+  getFormattedDate,
+  raceDetailsHandler,
+} from '../../helper';
 
 export class DriverDetails extends Component {
   state = {
@@ -27,7 +31,6 @@ export class DriverDetails extends Component {
       const driver =
         res[0].data.MRData.StandingsTable.StandingsLists[0].DriverStandings[0];
       const results = res[1].data.MRData.RaceTable.Races;
-      console.log(results);
       this.setState({
         driver: driver,
         results: results,
@@ -49,8 +52,8 @@ export class DriverDetails extends Component {
               <div className='driver-profile'>
                 <h1>
                   {driver.Driver.givenName} {driver.Driver.familyName}
-                  <div>Nationality: {driver.Driver.nationality}</div>
                 </h1>
+                <div>Nationality: {driver.Driver.nationality}</div>
               </div>
               <div className='driver-stats'>
                 <table className='driver-stats__table'>
@@ -58,6 +61,7 @@ export class DriverDetails extends Component {
                     <tr>
                       <td>Team:</td>
                       <td
+                        className='cursor'
                         onClick={() =>
                           constructorDetailsHandler(
                             this.props,
@@ -115,9 +119,17 @@ export class DriverDetails extends Component {
                 {results.map((result) => (
                   <tr key={result.round}>
                     <td>{result.round}</td>
-                    <td>{result.raceName}</td>
+                    <td
+                      className='cursor'
+                      onClick={() => {
+                        raceDetailsHandler(this.props, result.round, year);
+                      }}
+                    >
+                      {result.raceName}
+                    </td>
                     <td>{getFormattedDate(result.date)}</td>
                     <td
+                      className='cursor'
                       onClick={() =>
                         constructorDetailsHandler(
                           this.props,

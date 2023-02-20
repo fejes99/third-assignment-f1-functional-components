@@ -3,7 +3,11 @@ import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 
 import './ConstructorDetails.css';
-import { driverDetailsHandler, sumPoints } from '../../helper';
+import {
+  driverDetailsHandler,
+  raceDetailsHandler,
+  sumPoints,
+} from '../../helper';
 
 class ConstructorDetails extends Component {
   state = {
@@ -29,15 +33,12 @@ class ConstructorDetails extends Component {
         res[0].data.MRData.StandingsTable.StandingsLists[0]
           .ConstructorStandings[0];
       const results = res[1].data.MRData.RaceTable.Races;
-      this.setState(
-        {
-          constructor: constructor,
-          results: results,
-          year: year,
-          loading: false,
-        },
-        () => console.log(this.state)
-      );
+      this.setState({
+        constructor: constructor,
+        results: results,
+        year: year,
+        loading: false,
+      });
     });
   }
 
@@ -86,7 +87,7 @@ class ConstructorDetails extends Component {
               </div>
               <div className='constructor-drivers'>
                 <div
-                  className='constructor-drivers__1'
+                  className='constructor-drivers__1 cursor'
                   onClick={() =>
                     driverDetailsHandler(
                       this.props,
@@ -95,7 +96,6 @@ class ConstructorDetails extends Component {
                     )
                   }
                 >
-                  <div className='driverImg'></div>
                   <div className='driverName'>
                     {results[0].Results[0].Driver.givenName +
                       ' ' +
@@ -103,7 +103,7 @@ class ConstructorDetails extends Component {
                   </div>
                 </div>
                 <div
-                  className='constructor-drivers__2'
+                  className='constructor-drivers__2 cursor'
                   onClick={() =>
                     driverDetailsHandler(
                       this.props,
@@ -112,7 +112,6 @@ class ConstructorDetails extends Component {
                     )
                   }
                 >
-                  <div className='driverImg'></div>
                   <div className='driverName'>
                     {results[0].Results[1].Driver.givenName +
                       ' ' +
@@ -144,7 +143,14 @@ class ConstructorDetails extends Component {
                 {results.map((result) => (
                   <tr key={result.round}>
                     <td>{result.round}</td>
-                    <td>{result.raceName}</td>
+                    <td
+                      className='cursor'
+                      onClick={() => {
+                        raceDetailsHandler(this.props, result.round, year);
+                      }}
+                    >
+                      {result.raceName}
+                    </td>
                     <td className={`position-${result.Results[0].position}`}>
                       {result.Results[0].positionText === 'R'
                         ? 'DNF'

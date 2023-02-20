@@ -6,6 +6,7 @@ import {
   getFormattedDate,
   driverDetailsHandler,
   constructorDetailsHandler,
+  raceDetailsHandler,
 } from '../../helper';
 
 export class Races extends Component {
@@ -27,10 +28,11 @@ export class Races extends Component {
       });
   }
   render() {
+    const { loading, races, year } = this.state;
     return (
       <div className='container'>
-        <h1 className='title'>{this.state.year} Race Results</h1>
-        {this.state.loading ? (
+        <h1 className='title'>{year} Race Results</h1>
+        {loading ? (
           <BeatLoader color='#353a40' />
         ) : (
           <table>
@@ -47,18 +49,26 @@ export class Races extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.races.map((result) => (
+              {races.map((result) => (
                 <tr key={result.round}>
                   <td>{result.round}</td>
-                  <td>{result.raceName}</td>
+                  <td
+                    className='cursor'
+                    onClick={() =>
+                      raceDetailsHandler(this.props, result.round, year)
+                    }
+                  >
+                    {result.raceName}
+                  </td>
                   <td>{result.Circuit.circuitName}</td>
                   <td>{getFormattedDate(result.date)}</td>
                   <td
+                    className='cursor'
                     onClick={() =>
                       driverDetailsHandler(
                         this.props,
                         result.Results[0].Driver.driverId,
-                        this.state.year
+                        year
                       )
                     }
                   >
@@ -67,11 +77,12 @@ export class Races extends Component {
                       result.Results[0].Driver.familyName}
                   </td>
                   <td
+                    className='cursor'
                     onClick={() =>
                       constructorDetailsHandler(
                         this.props,
                         result.Results[0].Constructor.constructorId,
-                        this.state.year
+                        year
                       )
                     }
                   >

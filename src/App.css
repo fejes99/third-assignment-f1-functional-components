@@ -37,6 +37,7 @@ td a {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+  font-weight: bold;
 }
 
 td.position-1 {
@@ -78,4 +79,8 @@ tr:hover {
   margin: 0;
   padding: 30px 30px;
   background-color: white;
+}
+
+.cursor {
+  cursor: pointer;
 }

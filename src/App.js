@@ -8,6 +8,7 @@ import Constructors from './containers/Constructors/Constructors';
 import Races from './containers/Races/Races';
 import DriverDetails from './components/DriverDetails/DriverDetails';
 import ConstructorDetails from './components/ConstructorDetails/ConstructorDetails';
+import RaceDetails from './components/RaceDetails/RaceDetails';
 
 class App extends Component {
   render() {
@@ -21,7 +22,8 @@ class App extends Component {
               <Route exact path='/drivers' component={Drivers} />
               <Route path='/constructors/:id' component={ConstructorDetails} />
               <Route exact path='/constructors' component={Constructors} />
-              <Route path='/races' component={Races} />
+              <Route path='/races/:id' component={RaceDetails} />
+              <Route exact path='/races' component={Races} />
               <Route
                 exact
                 path='/'

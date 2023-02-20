@@ -7,7 +7,6 @@ import { constructorDetailsHandler } from '../../helper';
 export class Constructors extends Component {
   state = {
     constructorStandings: [],
-    round: 0,
     year: 2013,
     loading: true,
   };
@@ -20,17 +19,17 @@ export class Constructors extends Component {
         const data = res.data.MRData.StandingsTable.StandingsLists[0];
         this.setState({
           constructorStandings: data.ConstructorStandings,
-          round: data.round,
           loading: false,
         });
       });
   }
 
   render() {
+    const { loading, constructorStandings, year } = this.state;
     return (
       <div className='container'>
-        <h1 className='title'>{this.state.year} Constructor Standings</h1>
-        {this.state.loading ? (
+        <h1 className='title'>{year} Constructor Standings</h1>
+        {loading ? (
           <BeatLoader color='#353a40' />
         ) : (
           <table>
@@ -44,15 +43,16 @@ export class Constructors extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.constructorStandings.map((result) => (
+              {constructorStandings.map((result) => (
                 <tr key={result.position}>
                   <td>{result.position}</td>
                   <td
+                    className='cursor'
                     onClick={() =>
                       constructorDetailsHandler(
                         this.props,
                         result.Constructor.constructorId,
-                        this.state.year
+                        year
                       )
                     }
                   >

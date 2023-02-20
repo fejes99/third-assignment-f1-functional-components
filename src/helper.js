@@ -14,6 +14,10 @@ export const constructorDetailsHandler = (props, constructorId, year) => {
   props.history.push(`/constructors/${constructorId}?year=${year}`);
 };
 
+export const raceDetailsHandler = (props, raceId, year) => {
+  props.history.push(`/races/${raceId}?year=${year}`);
+};
+
 export const sumPoints = (firstDriver, secondDriver) => {
   return Number(firstDriver) + Number(secondDriver);
 };

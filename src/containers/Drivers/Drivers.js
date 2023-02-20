@@ -7,7 +7,6 @@ import { constructorDetailsHandler, driverDetailsHandler } from '../../helper';
 export class Drivers extends Component {
   state = {
     driverStandings: [],
-    round: 0,
     year: 2013,
     loading: true,
   };
@@ -18,17 +17,17 @@ export class Drivers extends Component {
         const data = res.data.MRData.StandingsTable.StandingsLists[0];
         this.setState({
           driverStandings: data.DriverStandings,
-          round: data.round,
           loading: false,
         });
       });
   }
 
   render() {
+    const { loading, driverStandings, year } = this.state;
     return (
       <div className='container'>
-        <h1 className='title'>{this.state.year} Driver Standings</h1>
-        {this.state.loading ? (
+        <h1 className='title'>{year} Driver Standings</h1>
+        {loading ? (
           <BeatLoader color='#353a40' />
         ) : (
           <table>
@@ -43,15 +42,16 @@ export class Drivers extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.driverStandings.map((result) => (
+              {driverStandings.map((result) => (
                 <tr key={result.position}>
                   <td>{result.position}</td>
                   <td
+                    className='cursor'
                     onClick={() =>
                       driverDetailsHandler(
                         this.props,
                         result.Driver.driverId,
-                        this.state.year
+                        year
                       )
                     }
                   >
@@ -59,11 +59,12 @@ export class Drivers extends Component {
                   </td>
                   <td>{result.Driver.nationality}</td>
                   <td
+                    className='cursor'
                     onClick={() =>
                       constructorDetailsHandler(
                         this.props,
                         result.Constructors[0].constructorId,
-                        this.state.year
+                        year
                       )
                     }
                   >
