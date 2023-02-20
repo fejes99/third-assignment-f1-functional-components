@@ -1,0 +1,12 @@
+.navbar-search {
+  height: 80%;
+  /* border: none; */
+  border-radius: 3px;
+  width: 15%;
+  padding: 6px;
+  font-size: 20px;
+}
+
+.navbar-search:focus {
+  outline-width: 0;
+}

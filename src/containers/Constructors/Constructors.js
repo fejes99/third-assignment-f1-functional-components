@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 import './Constructors.css';
 import { constructorDetailsHandler } from '../../helper';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 
 export class Constructors extends Component {
   state = {
@@ -28,6 +29,7 @@ export class Constructors extends Component {
     const { loading, constructorStandings, year } = this.state;
     return (
       <div className='container'>
+        <Breadcrumb elements={['constructors']} />
         <h1 className='title'>{year} Constructor Standings</h1>
         {loading ? (
           <BeatLoader color='#353a40' />

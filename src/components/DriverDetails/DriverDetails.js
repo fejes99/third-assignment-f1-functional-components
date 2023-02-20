@@ -8,6 +8,7 @@ import {
   getFormattedDate,
   raceDetailsHandler,
 } from '../../helper';
+import Breadcrumb from '../Breadcrumb/Breadcrumb';
 
 export class DriverDetails extends Component {
   state = {
@@ -31,12 +32,15 @@ export class DriverDetails extends Component {
       const driver =
         res[0].data.MRData.StandingsTable.StandingsLists[0].DriverStandings[0];
       const results = res[1].data.MRData.RaceTable.Races;
-      this.setState({
-        driver: driver,
-        results: results,
-        year: year,
-        loading: false,
-      });
+      this.setState(
+        {
+          driver: driver,
+          results: results,
+          year: year,
+          loading: false,
+        },
+        () => console.log(this.state)
+      );
     });
   }
 
@@ -48,12 +52,17 @@ export class DriverDetails extends Component {
           <BeatLoader color='#353a40' />
         ) : (
           <div>
+            <Breadcrumb elements={['drivers', `${driver.Driver.driverId}`]} />
             <div className='driver-details'>
               <div className='driver-profile'>
+                <img
+                  src='https://api.lorem.space/image/face?w=300&h=200'
+                  alt='Driver 1 placeholder'
+                  className='driver-profile-img'
+                />
                 <h1>
                   {driver.Driver.givenName} {driver.Driver.familyName}
                 </h1>
-                <div>Nationality: {driver.Driver.nationality}</div>
               </div>
               <div className='driver-stats'>
                 <table className='driver-stats__table'>

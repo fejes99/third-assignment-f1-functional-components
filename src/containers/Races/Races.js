@@ -8,6 +8,7 @@ import {
   constructorDetailsHandler,
   raceDetailsHandler,
 } from '../../helper';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 
 export class Races extends Component {
   state = {
@@ -31,6 +32,7 @@ export class Races extends Component {
     const { loading, races, year } = this.state;
     return (
       <div className='container'>
+        <Breadcrumb elements={['races']} />
         <h1 className='title'>{year} Race Results</h1>
         {loading ? (
           <BeatLoader color='#353a40' />

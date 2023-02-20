@@ -8,6 +8,7 @@ import {
   raceDetailsHandler,
   sumPoints,
 } from '../../helper';
+import Breadcrumb from '../Breadcrumb/Breadcrumb';
 
 class ConstructorDetails extends Component {
   state = {
@@ -33,6 +34,7 @@ class ConstructorDetails extends Component {
         res[0].data.MRData.StandingsTable.StandingsLists[0]
           .ConstructorStandings[0];
       const results = res[1].data.MRData.RaceTable.Races;
+
       this.setState({
         constructor: constructor,
         results: results,
@@ -50,6 +52,12 @@ class ConstructorDetails extends Component {
           <BeatLoader color='#353a40' />
         ) : (
           <div>
+            <Breadcrumb
+              elements={[
+                'constructors',
+                `${constructor.Constructor.constructorId}`,
+              ]}
+            />
             <div className='constructor-details'>
               <div className='constructor-stats'>
                 <table className='constructor-stats__table'>
@@ -96,6 +104,11 @@ class ConstructorDetails extends Component {
                     )
                   }
                 >
+                  <img
+                    src='https://api.lorem.space/image/face?w=300&h=200'
+                    alt='Driver 1 placeholder'
+                    className='driverImg'
+                  />
                   <div className='driverName'>
                     {results[0].Results[0].Driver.givenName +
                       ' ' +
@@ -112,6 +125,11 @@ class ConstructorDetails extends Component {
                     )
                   }
                 >
+                  <img
+                    src='https://api.lorem.space/image/fashion?w=300&h=200'
+                    alt='Driver 2 placeholder'
+                    className='driverImg'
+                  />
                   <div className='driverName'>
                     {results[0].Results[1].Driver.givenName +
                       ' ' +

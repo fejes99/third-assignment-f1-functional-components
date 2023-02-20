@@ -21,3 +21,5 @@ export const raceDetailsHandler = (props, raceId, year) => {
 export const sumPoints = (firstDriver, secondDriver) => {
   return Number(firstDriver) + Number(secondDriver);
 };
+
+export const searchFilter = (state) => {};

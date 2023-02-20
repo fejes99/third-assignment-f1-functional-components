@@ -3,11 +3,14 @@ import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 import './Drivers.css';
 import { constructorDetailsHandler, driverDetailsHandler } from '../../helper';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import SearchBar from '../../components/SearchBar/SearchBar';
 
 export class Drivers extends Component {
   state = {
     driverStandings: [],
     year: 2013,
+    query: '',
     loading: true,
   };
   componentDidMount() {
@@ -26,7 +29,11 @@ export class Drivers extends Component {
     const { loading, driverStandings, year } = this.state;
     return (
       <div className='container'>
-        <h1 className='title'>{year} Driver Standings</h1>
+        <Breadcrumb elements={['drivers']} />
+        <div className='drivers-header'>
+          <h1 className='title'>{year} Driver Standings</h1>
+          <SearchBar />
+        </div>
         {loading ? (
           <BeatLoader color='#353a40' />
         ) : (

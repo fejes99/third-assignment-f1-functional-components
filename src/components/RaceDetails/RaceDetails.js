@@ -4,6 +4,7 @@ import { BeatLoader } from 'react-spinners';
 
 import './RaceDetails.css';
 import { constructorDetailsHandler, driverDetailsHandler } from '../../helper';
+import Breadcrumb from '../Breadcrumb/Breadcrumb';
 
 export class RaceDetails extends Component {
   state = {
@@ -27,13 +28,16 @@ export class RaceDetails extends Component {
         res[0].data.MRData.RaceTable.Races[0].QualifyingResults;
       const raceResults = res[1].data.MRData.RaceTable.Races[0].Results;
       const circuitData = res[1].data.MRData.RaceTable.Races[0].Circuit;
-      this.setState({
-        qualiResults: qualiResults,
-        raceResults: raceResults,
-        circuitData: circuitData,
-        year: year,
-        loading: false,
-      });
+      this.setState(
+        {
+          qualiResults: qualiResults,
+          raceResults: raceResults,
+          circuitData: circuitData,
+          year: year,
+          loading: false,
+        },
+        () => console.log(this.state)
+      );
     });
   }
 
@@ -46,6 +50,7 @@ export class RaceDetails extends Component {
           <BeatLoader color='#353a40' />
         ) : (
           <div>
+            <Breadcrumb elements={['races', `${circuitData.circuitId}`]} />
             <div className='race-details'>
               <div className='race-profile'>
                 <h1>{circuitData.circuitName}</h1>
@@ -55,7 +60,8 @@ export class RaceDetails extends Component {
                 <table className='race-stats__table'>
                   <tbody>
                     <tr>
-                      <td>Year:</td> <td>{year}</td>
+                      <td>Year:</td>
+                      <td>{year}</td>
                     </tr>
                     <tr>
                       <td>Location:</td>

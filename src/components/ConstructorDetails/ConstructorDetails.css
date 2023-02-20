@@ -1,4 +1,5 @@
 .constructor-details {
+  padding-top: 30px;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -48,7 +49,7 @@
 
 .driverImg {
   background-color: lightgoldenrodyellow;
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 200px;
   margin-bottom: 15px;
 }
