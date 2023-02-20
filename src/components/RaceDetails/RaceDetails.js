@@ -55,6 +55,9 @@ export class RaceDetails extends Component {
                 <table className='race-stats__table'>
                   <tbody>
                     <tr>
+                      <td>Year:</td> <td>{year}</td>
+                    </tr>
+                    <tr>
                       <td>Location:</td>
                       <td>{circuitData.Location.locality}</td>
                     </tr>
