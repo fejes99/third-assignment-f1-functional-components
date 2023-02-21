@@ -25,15 +25,13 @@ export class Races extends Component {
   }
 
   fetchRaces = () => {
-    axios
-      .get(`http://ergast.com/api/f1/${this.state.year}/results/1.json`)
-      .then((res) => {
-        const data = res.data.MRData.RaceTable.Races;
-        this.setState({
-          races: data,
-          loading: false,
-        });
+    axios.get(`http://ergast.com/api/f1/${this.state.year}/results/1.json`).then((res) => {
+      const data = res.data.MRData.RaceTable.Races;
+      this.setState({
+        races: data,
+        loading: false,
       });
+    });
   };
 
   searchHandler = (event) => {
@@ -59,6 +57,62 @@ export class Races extends Component {
   render() {
     const { loading, query, year } = this.state;
     const races = racesFilter(this.state.races, query);
+    const racesTable = loading ? (
+      <BeatLoader color='#353a40' />
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th>Round</th>
+            <th>Grand Prix</th>
+            <th>Circuit</th>
+            <th>Date</th>
+            <th>Winner</th>
+            <th>Car</th>
+            <th>Laps</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {races.map((result) => (
+            <tr key={result.round}>
+              <td>{result.round}</td>
+              <td
+                className='cursor'
+                onClick={() => raceDetailsHandler(this.props, result.round, year)}
+              >
+                {result.raceName}
+              </td>
+              <td>{result.Circuit.circuitName}</td>
+              <td>{getFormattedDate(result.date)}</td>
+              <td
+                className='cursor'
+                onClick={() =>
+                  driverDetailsHandler(this.props, result.Results[0].Driver.driverId, year)
+                }
+              >
+                {result.Results[0].Driver.givenName + ' ' + result.Results[0].Driver.familyName}
+              </td>
+              <td
+                className='cursor'
+                onClick={() =>
+                  constructorDetailsHandler(
+                    this.props,
+                    result.Results[0].Constructor.constructorId,
+                    year
+                  )
+                }
+              >
+                {result.Results[0].Constructor.name}
+              </td>
+              <td>{result.Results[0].laps}</td>
+              <td>{result.Results[0].Time.time}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+
     return (
       <div className='container'>
         <Breadcrumb elements={['races']} />
@@ -75,69 +129,7 @@ export class Races extends Component {
             onChange={(event) => this.searchHandler(event)}
           />
         </div>
-        {loading ? (
-          <BeatLoader color='#353a40' />
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Round</th>
-                <th>Grand Prix</th>
-                <th>Circuit</th>
-                <th>Date</th>
-                <th>Winner</th>
-                <th>Car</th>
-                <th>Laps</th>
-                <th>Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {races.map((result) => (
-                <tr key={result.round}>
-                  <td>{result.round}</td>
-                  <td
-                    className='cursor'
-                    onClick={() =>
-                      raceDetailsHandler(this.props, result.round, year)
-                    }
-                  >
-                    {result.raceName}
-                  </td>
-                  <td>{result.Circuit.circuitName}</td>
-                  <td>{getFormattedDate(result.date)}</td>
-                  <td
-                    className='cursor'
-                    onClick={() =>
-                      driverDetailsHandler(
-                        this.props,
-                        result.Results[0].Driver.driverId,
-                        year
-                      )
-                    }
-                  >
-                    {result.Results[0].Driver.givenName +
-                      ' ' +
-                      result.Results[0].Driver.familyName}
-                  </td>
-                  <td
-                    className='cursor'
-                    onClick={() =>
-                      constructorDetailsHandler(
-                        this.props,
-                        result.Results[0].Constructor.constructorId,
-                        year
-                      )
-                    }
-                  >
-                    {result.Results[0].Constructor.name}
-                  </td>
-                  <td>{result.Results[0].laps}</td>
-                  <td>{result.Results[0].Time.time}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        {racesTable}
       </div>
     );
   }

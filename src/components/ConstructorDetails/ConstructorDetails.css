@@ -8,8 +8,20 @@
 .constructor-stats {
   flex-basis: 50%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+.constructor-stats__name {
+  display: flex;
+  align-items: center;
+}
+
+.constructor-stats img {
+  height: 50px;
+  width: auto;
+  padding-right: 20px;
+}
 .constructor-stats__table {
   max-width: 500px;
   margin-top: 0;
@@ -22,6 +34,11 @@
 .constructor-stats__table td {
   padding: 8px 0;
   font-weight: normal;
+}
+
+.constructor-stats__table img {
+  height: 30px;
+  width: auto;
 }
 
 .constructor-stats__table td:first-child {

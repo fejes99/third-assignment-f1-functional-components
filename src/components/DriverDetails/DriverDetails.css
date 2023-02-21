@@ -11,6 +11,18 @@
   justify-content: center;
 }
 
+.driver-profile-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.driver-profile-data img {
+  width: auto;
+  padding-right: 20px;
+  height: 50px;
+}
+
 .driver-stats {
   flex-basis: 50%;
   display: flex;

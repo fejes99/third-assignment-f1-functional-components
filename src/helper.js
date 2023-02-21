@@ -1,8 +1,10 @@
 export const getFormattedDate = (inputDate) => {
   const date = new Date(inputDate);
+
   const day = String(date.getDate()).padStart(2, '0');
   const month = date.toLocaleString('default', { month: 'short' });
   const year = date.getFullYear();
+
   return `${day} ${month} ${year}`;
 };
 
@@ -32,13 +34,11 @@ export const driversFilter = (driverStandings, query) => {
 };
 
 export const constructorsFilter = (constructorStandings, query) => {
-  const filteredConstructorStandings = constructorStandings.filter(
-    (constructor) => {
-      const constructorInfo =
-        `${constructor.Constructor.name} ${constructor.Constructor.nationality}`.toLowerCase();
-      return constructorInfo.includes(query.toLowerCase());
-    }
-  );
+  const filteredConstructorStandings = constructorStandings.filter((constructor) => {
+    const constructorInfo =
+      `${constructor.Constructor.name} ${constructor.Constructor.nationality}`.toLowerCase();
+    return constructorInfo.includes(query.toLowerCase());
+  });
   return filteredConstructorStandings;
 };
 
@@ -49,4 +49,15 @@ export const racesFilter = (races, query) => {
     return raceInfo.includes(query.toLowerCase());
   });
   return filteredRaces;
+};
+
+export const nationalityToCountryCodeConverter = (countryList, nationality) => {
+  const filteredCountry = countryList.find((country) =>
+    country.nationality
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .includes(nationality.toLowerCase())
+  );
+  return filteredCountry.alpha_2_code;
 };

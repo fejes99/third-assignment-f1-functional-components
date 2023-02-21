@@ -24,11 +24,7 @@ class App extends Component {
               <Route exact path='/constructors' component={Constructors} />
               <Route path='/races/:id' component={RaceDetails} />
               <Route exact path='/races' component={Races} />
-              <Route
-                exact
-                path='/'
-                component={() => <Redirect to='/drivers' />}
-              />
+              <Route exact path='/' component={() => <Redirect to='/drivers' />} />
             </div>
           </div>
         </Switch>
