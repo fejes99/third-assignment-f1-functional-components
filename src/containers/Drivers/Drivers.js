@@ -8,16 +8,21 @@ import {
   driversFilter,
 } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import YearPicker from '../../components/YearPicker/YearPicker';
 
 export class Drivers extends Component {
   state = {
     driverStandings: [],
-    year: 2013,
+    year: 2022,
     query: '',
     loading: true,
   };
 
   componentDidMount() {
+    this.fetchDrivers();
+  }
+
+  fetchDrivers = () => {
     axios
       .get(`http://ergast.com/api/f1/${this.state.year}/driverStandings.json`)
       .then((res) => {
@@ -27,7 +32,7 @@ export class Drivers extends Component {
           loading: false,
         });
       });
-  }
+  };
 
   searchHandler = (event) => {
     const query = event.target.value;
@@ -35,18 +40,32 @@ export class Drivers extends Component {
       {
         query: query,
       },
-      () => driversFilter(this.state)
+      () => driversFilter(this.state.driverStandings, this.state.query)
+    );
+  };
+
+  yearHandler = (event) => {
+    this.setState(
+      {
+        year: event.target.value,
+        loading: true,
+      },
+      () => this.fetchDrivers()
     );
   };
 
   render() {
-    const { loading, query, year } = this.state;
-    const driverStandings = driversFilter(this.state);
+    const { loading, driverStandings, query, year } = this.state;
+    const standings = driversFilter(driverStandings, query);
     return (
       <div className='container'>
         <Breadcrumb elements={['drivers']} />
         <div className='header'>
-          <h1 className='title'>{year} Driver Standings</h1>
+          <h1 className='title'>
+            <YearPicker year={year} onChange={this.yearHandler} /> Driver
+            Standings
+          </h1>
+
           <input
             className='navbar-search'
             type='text'
@@ -70,8 +89,8 @@ export class Drivers extends Component {
               </tr>
             </thead>
             <tbody>
-              {driverStandings &&
-                driverStandings.map((result) => (
+              {standings &&
+                standings.map((result) => (
                   <tr key={result.position}>
                     <td>{result.position}</td>
                     <td

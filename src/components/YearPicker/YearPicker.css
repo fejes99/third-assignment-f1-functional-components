@@ -1,0 +1,15 @@
+.year-picker {
+  height: fit-content;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+}
+
+.year-picker option {
+  font-size: 1.5rem;
+}
+
+.year-picker:focus-visible {
+  outline-width: 0;
+}

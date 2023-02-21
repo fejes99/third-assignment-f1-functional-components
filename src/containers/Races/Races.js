@@ -10,16 +10,21 @@ import {
   racesFilter,
 } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import YearPicker from '../../components/YearPicker/YearPicker';
 
 export class Races extends Component {
   state = {
     races: [],
-    year: 2013,
+    year: 2022,
     query: '',
     loading: true,
   };
 
   componentDidMount() {
+    this.fetchRaces();
+  }
+
+  fetchRaces = () => {
     axios
       .get(`http://ergast.com/api/f1/${this.state.year}/results/1.json`)
       .then((res) => {
@@ -29,7 +34,7 @@ export class Races extends Component {
           loading: false,
         });
       });
-  }
+  };
 
   searchHandler = (event) => {
     const query = event.target.value;
@@ -37,19 +42,31 @@ export class Races extends Component {
       {
         query: query,
       },
-      () => racesFilter(this.state)
+      () => racesFilter(this.state.races, this.state.query)
+    );
+  };
+
+  yearHandler = (event) => {
+    this.setState(
+      {
+        year: event.target.value,
+        loading: true,
+      },
+      () => this.fetchRaces()
     );
   };
 
   render() {
     const { loading, query, year } = this.state;
-    const races = racesFilter(this.state);
+    const races = racesFilter(this.state.races, query);
     return (
       <div className='container'>
         <Breadcrumb elements={['races']} />
 
         <div className='header'>
-          <h1 className='title'>{year} Race Results</h1>
+          <h1 className='title'>
+            <YearPicker year={year} onChange={this.yearHandler} /> Race Results
+          </h1>
           <input
             className='navbar-search'
             type='text'

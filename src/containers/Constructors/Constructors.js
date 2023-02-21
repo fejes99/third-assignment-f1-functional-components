@@ -4,16 +4,21 @@ import { BeatLoader } from 'react-spinners';
 import './Constructors.css';
 import { constructorDetailsHandler, constructorsFilter } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import YearPicker from '../../components/YearPicker/YearPicker';
 
 export class Constructors extends Component {
   state = {
     constructorStandings: [],
-    year: 2013,
+    year: 2022,
     query: '',
     loading: true,
   };
 
   componentDidMount() {
+    this.fetchConstructors();
+  }
+
+  fetchConstructors = () => {
     axios
       .get(
         `http://ergast.com/api/f1/${this.state.year}/constructorStandings.json`
@@ -25,7 +30,7 @@ export class Constructors extends Component {
           loading: false,
         });
       });
-  }
+  };
 
   searchHandler = (event) => {
     const query = event.target.value;
@@ -33,18 +38,35 @@ export class Constructors extends Component {
       {
         query: query,
       },
-      () => constructorsFilter(this.state)
+      () =>
+        constructorsFilter(this.state.constructorStandings, this.state.query)
+    );
+  };
+
+  yearHandler = (event) => {
+    this.setState(
+      {
+        year: event.target.value,
+        loading: true,
+      },
+      () => this.fetchConstructors()
     );
   };
 
   render() {
     const { loading, query, year } = this.state;
-    const constructorStandings = constructorsFilter(this.state);
+    const constructorStandings = constructorsFilter(
+      this.state.constructorStandings,
+      query
+    );
     return (
       <div className='container'>
         <Breadcrumb elements={['constructors']} />
         <div className='header'>
-          <h1 className='title'>{year} Constructor Standings</h1>
+          <h1 className='title'>
+            <YearPicker year={year} onChange={this.yearHandler} /> Constructor
+            Standings
+          </h1>
           <input
             className='navbar-search'
             type='text'

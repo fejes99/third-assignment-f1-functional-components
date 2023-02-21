@@ -22,8 +22,7 @@ export const sumPoints = (firstDriver, secondDriver) => {
   return Number(firstDriver) + Number(secondDriver);
 };
 
-export const driversFilter = (state) => {
-  const { driverStandings, query } = state;
+export const driversFilter = (driverStandings, query) => {
   const filteredDriverStandings = driverStandings.filter((driver) => {
     const driverInfo =
       `${driver.Driver.givenName} ${driver.Driver.familyName} ${driver.Driver.nationality} ${driver.Constructors[0].name}`.toLowerCase();
@@ -32,8 +31,7 @@ export const driversFilter = (state) => {
   return filteredDriverStandings;
 };
 
-export const constructorsFilter = (state) => {
-  const { constructorStandings, query } = state;
+export const constructorsFilter = (constructorStandings, query) => {
   const filteredConstructorStandings = constructorStandings.filter(
     (constructor) => {
       const constructorInfo =
@@ -44,8 +42,7 @@ export const constructorsFilter = (state) => {
   return filteredConstructorStandings;
 };
 
-export const racesFilter = (state) => {
-  const { races, query } = state;
+export const racesFilter = (races, query) => {
   const filteredRaces = races.filter((race) => {
     const raceInfo =
       `${race.Results[0].Driver.givenName} ${race.Results[0].Driver.familyName} ${race.Results[0].Constructor.name}`.toLowerCase();
