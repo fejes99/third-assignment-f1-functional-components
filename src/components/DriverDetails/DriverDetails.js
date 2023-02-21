@@ -32,15 +32,12 @@ export class DriverDetails extends Component {
       const driver =
         res[0].data.MRData.StandingsTable.StandingsLists[0].DriverStandings[0];
       const results = res[1].data.MRData.RaceTable.Races;
-      this.setState(
-        {
-          driver: driver,
-          results: results,
-          year: year,
-          loading: false,
-        },
-        () => console.log(this.state)
-      );
+      this.setState({
+        driver: driver,
+        results: results,
+        year: year,
+        loading: false,
+      });
     });
   }
 

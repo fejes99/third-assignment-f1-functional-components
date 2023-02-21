@@ -7,6 +7,7 @@ import {
   driverDetailsHandler,
   constructorDetailsHandler,
   raceDetailsHandler,
+  racesFilter,
 } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 
@@ -14,6 +15,7 @@ export class Races extends Component {
   state = {
     races: [],
     year: 2013,
+    query: '',
     loading: true,
   };
 
@@ -28,12 +30,34 @@ export class Races extends Component {
         });
       });
   }
+
+  searchHandler = (event) => {
+    const query = event.target.value;
+    this.setState(
+      {
+        query: query,
+      },
+      () => racesFilter(this.state)
+    );
+  };
+
   render() {
-    const { loading, races, year } = this.state;
+    const { loading, query, year } = this.state;
+    const races = racesFilter(this.state);
     return (
       <div className='container'>
         <Breadcrumb elements={['races']} />
-        <h1 className='title'>{year} Race Results</h1>
+
+        <div className='header'>
+          <h1 className='title'>{year} Race Results</h1>
+          <input
+            className='navbar-search'
+            type='text'
+            value={query}
+            placeholder='Search...'
+            onChange={(event) => this.searchHandler(event)}
+          />
+        </div>
         {loading ? (
           <BeatLoader color='#353a40' />
         ) : (

@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 import './Constructors.css';
-import { constructorDetailsHandler } from '../../helper';
+import { constructorDetailsHandler, constructorsFilter } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 
 export class Constructors extends Component {
   state = {
     constructorStandings: [],
     year: 2013,
+    query: '',
     loading: true,
   };
+
   componentDidMount() {
     axios
       .get(
@@ -25,12 +27,32 @@ export class Constructors extends Component {
       });
   }
 
+  searchHandler = (event) => {
+    const query = event.target.value;
+    this.setState(
+      {
+        query: query,
+      },
+      () => constructorsFilter(this.state)
+    );
+  };
+
   render() {
-    const { loading, constructorStandings, year } = this.state;
+    const { loading, query, year } = this.state;
+    const constructorStandings = constructorsFilter(this.state);
     return (
       <div className='container'>
         <Breadcrumb elements={['constructors']} />
-        <h1 className='title'>{year} Constructor Standings</h1>
+        <div className='header'>
+          <h1 className='title'>{year} Constructor Standings</h1>
+          <input
+            className='navbar-search'
+            type='text'
+            value={query}
+            placeholder='Search...'
+            onChange={(event) => this.searchHandler(event)}
+          />
+        </div>
         {loading ? (
           <BeatLoader color='#353a40' />
         ) : (
@@ -45,26 +67,27 @@ export class Constructors extends Component {
               </tr>
             </thead>
             <tbody>
-              {constructorStandings.map((result) => (
-                <tr key={result.position}>
-                  <td>{result.position}</td>
-                  <td
-                    className='cursor'
-                    onClick={() =>
-                      constructorDetailsHandler(
-                        this.props,
-                        result.Constructor.constructorId,
-                        year
-                      )
-                    }
-                  >
-                    {result.Constructor.name}
-                  </td>
-                  <td>{result.Constructor.nationality}</td>
-                  <td>{result.wins}</td>
-                  <td>{result.points}</td>
-                </tr>
-              ))}
+              {constructorStandings &&
+                constructorStandings.map((result) => (
+                  <tr key={result.position}>
+                    <td>{result.position}</td>
+                    <td
+                      className='cursor'
+                      onClick={() =>
+                        constructorDetailsHandler(
+                          this.props,
+                          result.Constructor.constructorId,
+                          year
+                        )
+                      }
+                    >
+                      {result.Constructor.name}
+                    </td>
+                    <td>{result.Constructor.nationality}</td>
+                    <td>{result.wins}</td>
+                    <td>{result.points}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         )}

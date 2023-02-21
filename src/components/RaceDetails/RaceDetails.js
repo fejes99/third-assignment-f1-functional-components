@@ -28,16 +28,13 @@ export class RaceDetails extends Component {
         res[0].data.MRData.RaceTable.Races[0].QualifyingResults;
       const raceResults = res[1].data.MRData.RaceTable.Races[0].Results;
       const circuitData = res[1].data.MRData.RaceTable.Races[0].Circuit;
-      this.setState(
-        {
-          qualiResults: qualiResults,
-          raceResults: raceResults,
-          circuitData: circuitData,
-          year: year,
-          loading: false,
-        },
-        () => console.log(this.state)
-      );
+      this.setState({
+        qualiResults: qualiResults,
+        raceResults: raceResults,
+        circuitData: circuitData,
+        year: year,
+        loading: false,
+      });
     });
   }
 

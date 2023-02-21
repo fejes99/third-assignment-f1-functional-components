@@ -84,3 +84,25 @@ tr:hover {
 .cursor {
   cursor: pointer;
 }
+
+.navbar-search {
+  height: 80%;
+  border-radius: 3px;
+  width: 15%;
+  font-size: 20px;
+  padding: 10px;
+  border: 0.5px solid #ccc;
+  -webkit-box-shadow: -10px 10px 15px -10px rgba(207, 207, 207, 1);
+  -moz-box-shadow: -10px 10px 15px -10px rgba(207, 207, 207, 1);
+  box-shadow: -10px 10px 15px -10px rgba(207, 207, 207, 1);
+}
+
+.navbar-search:focus {
+  outline-width: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
