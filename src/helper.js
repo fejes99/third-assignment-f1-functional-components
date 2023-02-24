@@ -1,3 +1,5 @@
+import history from './history';
+
 export const getFormattedDate = (inputDate) => {
   const date = new Date(inputDate);
 
@@ -8,12 +10,12 @@ export const getFormattedDate = (inputDate) => {
   return `${day} ${month} ${year}`;
 };
 
-export const driverDetailsHandler = (props, driverId, year) => {
-  props.history.push(`/drivers/${driverId}?year=${year}`);
+export const driverDetailsHandler = (driverId, year) => {
+  history.push(`/drivers/${driverId}?year=${year}`);
 };
 
-export const constructorDetailsHandler = (props, constructorId, year) => {
-  props.history.push(`/constructors/${constructorId}?year=${year}`);
+export const constructorDetailsHandler = (constructorId, year) => {
+  history.push(`/constructors/${constructorId}?year=${year}`);
 };
 
 export const raceDetailsHandler = (props, raceId, year) => {
