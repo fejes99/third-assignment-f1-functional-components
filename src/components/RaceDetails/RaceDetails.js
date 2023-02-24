@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BeatLoader } from 'react-spinners';
 
@@ -10,18 +10,21 @@ import {
 } from '../../helper';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 
-export class RaceDetails extends Component {
-  state = {
-    qualiResults: [],
-    raceResults: [],
-    circuitData: [],
-    year: null,
-    loading: true,
-  };
+const RaceDetails = ({ match, location }) => {
+  const [qualiResults, setQualiResults] = useState([]);
+  const [raceResults, setRaceResults] = useState([]);
+  const [circuitData, setCircuitData] = useState(null);
+  const [year, setYear] = useState(null);
+  const [countryCode, setCountryCode] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    const query = new URLSearchParams(this.props.location.search);
+  useEffect(() => {
+    fetchRaceDetails();
+  }, []);
+
+  const fetchRaceDetails = () => {
+    const { id } = match.params;
+    const query = new URLSearchParams(location.search);
     const year = query.get('year');
 
     Promise.all([
@@ -38,151 +41,140 @@ export class RaceDetails extends Component {
         res[2].data,
         circuitData.Location.country
       );
-      this.setState({
-        qualiResults: qualiResults,
-        raceResults: raceResults,
-        circuitData: circuitData,
-        year: year,
-        countryCode: countryCode,
-        loading: false,
-      });
+      setQualiResults(qualiResults);
+      setRaceResults(raceResults);
+      setCircuitData(circuitData);
+      setYear(year);
+      setCountryCode(countryCode);
+      setLoading(false);
     });
-  }
+  };
 
-  render() {
-    const { loading, qualiResults, raceResults, circuitData, countryCode, year } = this.state;
-    const raceContent = loading ? (
-      <BeatLoader color='#353a40' />
-    ) : (
-      <div>
-        <Breadcrumb elements={['races', `${circuitData.circuitId}`]} />
-        <div className='race-details'>
-          <div className='race-profile'>
-            <h1>{circuitData.circuitName}</h1>
+  const raceContent = loading ? (
+    <BeatLoader color='#353a40' />
+  ) : (
+    <div>
+      <Breadcrumb elements={['races', `${circuitData.circuitId}`]} />
+      <div className='race-details'>
+        <div className='race-profile'>
+          <h1>{circuitData.circuitName}</h1>
+          {countryCode && (
             <img src={`https://flagsapi.com/${countryCode}/shiny/64.png`} alt='Flag' />
-          </div>
-          <div className='race-stats'>
-            <table className='race-stats__table'>
-              <tbody>
-                <tr>
-                  <td>Year:</td>
-                  <td>{year}</td>
-                </tr>
-                <tr>
-                  <td>Location:</td>
-                  <td>{circuitData.Location.locality}</td>
-                </tr>
-                <tr>
-                  <td>Bio:</td>
-                  <td>
-                    <a href={circuitData.url} target='_blank'>
-                      Wiki
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          )}
         </div>
-
-        <div className='result-tables'>
-          <div className='result-wrapper'>
-            <h1>Qualifying Results</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Pos</th>
-                  <th>Driver</th>
-                  <th>Car</th>
-                  <th>Q1</th>
-                  <th>Q2</th>
-                  <th>Q3</th>
-                </tr>
-              </thead>
-              <tbody>
-                {qualiResults.map((result) => (
-                  <tr key={result.number}>
-                    <td>{result.position}</td>
-                    <td
-                      className='cursor'
-                      onClick={() => {
-                        driverDetailsHandler(this.props, result.Driver.driverId, year);
-                      }}
-                    >
-                      {result.Driver.givenName + ' ' + result.Driver.familyName}
-                    </td>
-                    <td
-                      className='cursor'
-                      onClick={() => {
-                        constructorDetailsHandler(
-                          this.props,
-                          result.Constructor.constructorId,
-                          year
-                        );
-                      }}
-                    >
-                      {result.Constructor.name}
-                    </td>
-                    <td>{result.Q1 !== null ? result.Q1 : ''}</td>
-                    <td>{result.Q2 !== null ? result.Q2 : ''}</td>
-                    <td>{result.Q3 !== null ? result.Q3 : ''}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className='vl'></div>
-          <div className='result-wrapper'>
-            <h1>Race Results</h1>
-            <table>
-              <thead>
-                <tr>
-                  <th>Pos</th>
-                  <th>Driver</th>
-                  <th>Car</th>
-                  <th>Laps</th>
-                  <th>Result</th>
-                  <th>Pts</th>
-                </tr>
-              </thead>
-              <tbody>
-                {raceResults.map((result) => (
-                  <tr key={result.position}>
-                    <td>{result.position}</td>
-                    <td
-                      className='cursor'
-                      onClick={() => {
-                        driverDetailsHandler(this.props, result.Driver.driverId, year);
-                      }}
-                    >
-                      {result.Driver.givenName + ' ' + result.Driver.familyName}
-                    </td>
-                    <td
-                      className='cursor'
-                      onClick={() => {
-                        constructorDetailsHandler(
-                          this.props,
-                          result.Constructor.constructorId,
-                          year
-                        );
-                      }}
-                    >
-                      {result.Constructor.name}
-                    </td>
-                    <td>{result.laps}</td>
-                    <td>{result.Time ? result.Time.time : 'No time'}</td>
-                    <td>{result.points}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <div className='race-stats'>
+          <table className='race-stats__table'>
+            <tbody>
+              <tr>
+                <td>Year:</td>
+                <td>{year}</td>
+              </tr>
+              <tr>
+                <td>Location:</td>
+                <td>{circuitData.Location.locality}</td>
+              </tr>
+              <tr>
+                <td>Bio:</td>
+                <td>
+                  <a href={circuitData.url} target='_blank'>
+                    Wiki
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    );
 
-    return <div className='container'>{raceContent}</div>;
-  }
-}
+      <div className='result-tables'>
+        <div className='result-wrapper'>
+          <h1>Qualifying Results</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Pos</th>
+                <th>Driver</th>
+                <th>Car</th>
+                <th>Q1</th>
+                <th>Q2</th>
+                <th>Q3</th>
+              </tr>
+            </thead>
+            <tbody>
+              {qualiResults.map((result) => (
+                <tr key={result.number}>
+                  <td>{result.position}</td>
+                  <td
+                    className='cursor'
+                    onClick={() => {
+                      driverDetailsHandler(result.Driver.driverId, year);
+                    }}
+                  >
+                    {result.Driver.givenName + ' ' + result.Driver.familyName}
+                  </td>
+                  <td
+                    className='cursor'
+                    onClick={() => {
+                      constructorDetailsHandler(result.Constructor.constructorId, year);
+                    }}
+                  >
+                    {result.Constructor.name}
+                  </td>
+                  <td>{result.Q1 !== null ? result.Q1 : ''}</td>
+                  <td>{result.Q2 !== null ? result.Q2 : ''}</td>
+                  <td>{result.Q3 !== null ? result.Q3 : ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className='vl'></div>
+        <div className='result-wrapper'>
+          <h1>Race Results</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Pos</th>
+                <th>Driver</th>
+                <th>Car</th>
+                <th>Laps</th>
+                <th>Result</th>
+                <th>Pts</th>
+              </tr>
+            </thead>
+            <tbody>
+              {raceResults.map((result) => (
+                <tr key={result.position}>
+                  <td>{result.position}</td>
+                  <td
+                    className='cursor'
+                    onClick={() => {
+                      driverDetailsHandler(result.Driver.driverId, year);
+                    }}
+                  >
+                    {result.Driver.givenName + ' ' + result.Driver.familyName}
+                  </td>
+                  <td
+                    className='cursor'
+                    onClick={() => {
+                      constructorDetailsHandler(result.Constructor.constructorId, year);
+                    }}
+                  >
+                    {result.Constructor.name}
+                  </td>
+                  <td>{result.laps}</td>
+                  <td>{result.Time ? result.Time.time : 'No time'}</td>
+                  <td>{result.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  return <div className='container'>{raceContent}</div>;
+};
 
 export default RaceDetails;
