@@ -16,11 +16,6 @@ const Drivers = () => {
     fetchDrivers();
   }, [year]);
 
-  useEffect(() => {
-    const standings = driversFilter(driverStandings, query);
-    setDriverStandings(standings);
-  }, [query]);
-
   const fetchDrivers = () => {
     axios.get(`http://ergast.com/api/f1/${year}/driverStandings.json`).then((res) => {
       const data = res.data.MRData.StandingsTable.StandingsLists[0];
@@ -29,15 +24,16 @@ const Drivers = () => {
     });
   };
 
-  const searchHandler = (query) => {
-    setQuery(query);
+  const searchHandler = (event) => {
+    setQuery(event.target.value);
   };
 
-  const yearHandler = (year) => {
-    setYear(year);
+  const yearHandler = (event) => {
+    setYear(event.target.value);
     setLoading(true);
   };
 
+  const standings = driversFilter(driverStandings, query);
   const driversTable = loading ? (
     <BeatLoader color='#353a40' />
   ) : (
@@ -53,8 +49,8 @@ const Drivers = () => {
         </tr>
       </thead>
       <tbody>
-        {driverStandings &&
-          driverStandings.map((result) => (
+        {standings &&
+          standings.map((result) => (
             <tr key={result.position}>
               <td>{result.position}</td>
               <td
@@ -85,8 +81,7 @@ const Drivers = () => {
       <Breadcrumb elements={['drivers']} />
       <div className='header'>
         <h1 className='title'>
-          <YearPicker year={year} onChange={(event) => yearHandler(event.target.value)} /> Driver
-          Standings
+          <YearPicker year={year} onChange={yearHandler} /> Driver Standings
         </h1>
 
         <input
@@ -94,7 +89,7 @@ const Drivers = () => {
           type='text'
           value={query}
           placeholder='Search...'
-          onChange={(event) => searchHandler(event.target.value)}
+          onChange={searchHandler}
         />
       </div>
       {driversTable}
