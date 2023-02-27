@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
 
 import './DriverDetails.css';
 import {
@@ -10,6 +9,7 @@ import {
   raceDetailsHandler,
 } from '../../helper';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
+import Loader from '../../components/Loader/Loader';
 
 const DriverDetails = ({ match, location }) => {
   const [driver, setDriver] = useState(null);
@@ -27,26 +27,26 @@ const DriverDetails = ({ match, location }) => {
     const query = new URLSearchParams(location.search);
     const year = query.get('year');
 
-    Promise.all([
-      axios.get(`http://ergast.com/api/f1/${year}/drivers/${id}/driverStandings.json`),
-      axios.get(`http://ergast.com/api/f1/${year}/drivers/${id}/results.json`),
-      axios.get(
-        'https://raw.githubusercontent.com/Dinuks/country-nationality-list/master/countries.json'
-      ),
-    ]).then((res) => {
+    let endpoints = [
+      `http://ergast.com/api/f1/${year}/drivers/${id}/driverStandings.json`,
+      `http://ergast.com/api/f1/${year}/drivers/${id}/results.json`,
+      'https://raw.githubusercontent.com/Dinuks/country-nationality-list/master/countries.json',
+    ];
+
+    axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then((res) => {
       const driver = res[0].data.MRData.StandingsTable.StandingsLists[0].DriverStandings[0];
-      const results = res[1].data.MRData.RaceTable.Races;
       const countryCode = nationalityToCountryCodeConverter(res[2].data, driver.Driver.nationality);
       setDriver(driver);
-      setResults(results);
+      setResults(res[1].data.MRData.RaceTable.Races);
       setYear(year);
       setCountryCode(countryCode);
       setLoading(false);
     });
   };
-  const driverContent = loading ? (
-    <BeatLoader color='#353a40' />
-  ) : (
+
+  if (loading) return <Loader />;
+
+  const driverContent = (
     <div>
       <Breadcrumb elements={['drivers', `${driver.Driver.driverId}`]} />
       <div className='driver-details'>

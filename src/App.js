@@ -14,9 +14,9 @@ const App = () => {
   return (
     <div className='App'>
       <Navbar />
-      <Switch>
-        <div className='main'>
-          <div className='wrapper'>
+      <div className='main'>
+        <div className='wrapper'>
+          <Switch>
             <Route path='/drivers/:id' component={DriverDetails} />
             <Route exact path='/drivers' component={Drivers} />
             <Route path='/constructors/:id' component={ConstructorDetails} />
@@ -24,9 +24,9 @@ const App = () => {
             <Route path='/races/:id' component={RaceDetails} />
             <Route exact path='/races' component={Races} />
             <Route exact path='/' component={() => <Redirect to='/drivers' />} />
-          </div>
+          </Switch>
         </div>
-      </Switch>
+      </div>
     </div>
   );
 };

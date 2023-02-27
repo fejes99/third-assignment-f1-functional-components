@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
 import './Drivers.css';
 import { constructorDetailsHandler, driverDetailsHandler, driversFilter } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import YearPicker from '../../components/YearPicker/YearPicker';
+import Loader from '../../components/Loader/Loader';
 
 const Drivers = () => {
   const [driverStandings, setDriverStandings] = useState([]);
@@ -18,8 +18,7 @@ const Drivers = () => {
 
   const fetchDrivers = () => {
     axios.get(`http://ergast.com/api/f1/${year}/driverStandings.json`).then((res) => {
-      const data = res.data.MRData.StandingsTable.StandingsLists[0];
-      setDriverStandings(data.DriverStandings);
+      setDriverStandings(res.data.MRData.StandingsTable.StandingsLists[0].DriverStandings);
       setLoading(false);
     });
   };
@@ -33,10 +32,11 @@ const Drivers = () => {
     setLoading(true);
   };
 
+  if (loading) return <Loader />;
+
   const standings = driversFilter(driverStandings, query);
-  const driversTable = loading ? (
-    <BeatLoader color='#353a40' />
-  ) : (
+
+  const driversTable = (
     <table>
       <thead>
         <tr>

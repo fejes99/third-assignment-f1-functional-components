@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
+import Loader from '../Loader/Loader';
 
 import './RaceDetails.css';
 import {
@@ -27,22 +27,20 @@ const RaceDetails = ({ match, location }) => {
     const query = new URLSearchParams(location.search);
     const year = query.get('year');
 
-    Promise.all([
-      axios.get(`https://ergast.com/api/f1/${year}/${id}/qualifying.json`),
-      axios.get(`https://ergast.com/api/f1/${year}/${id}/results.json`),
-      axios.get(
-        'https://raw.githubusercontent.com/Dinuks/country-nationality-list/master/countries.json'
-      ),
-    ]).then((res) => {
-      const qualiResults = res[0].data.MRData.RaceTable.Races[0].QualifyingResults;
-      const raceResults = res[1].data.MRData.RaceTable.Races[0].Results;
+    let endpoints = [
+      `https://ergast.com/api/f1/${year}/${id}/qualifying.json`,
+      `https://ergast.com/api/f1/${year}/${id}/results.json`,
+      'https://raw.githubusercontent.com/Dinuks/country-nationality-list/master/countries.json',
+    ];
+
+    axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then((res) => {
       const circuitData = res[1].data.MRData.RaceTable.Races[0].Circuit;
       const countryCode = nationalityToCountryCodeConverter(
         res[2].data,
         circuitData.Location.country
       );
-      setQualiResults(qualiResults);
-      setRaceResults(raceResults);
+      setQualiResults(res[0].data.MRData.RaceTable.Races[0].QualifyingResults);
+      setRaceResults(res[1].data.MRData.RaceTable.Races[0].Results);
       setCircuitData(circuitData);
       setYear(year);
       setCountryCode(countryCode);
@@ -50,9 +48,9 @@ const RaceDetails = ({ match, location }) => {
     });
   };
 
-  const raceContent = loading ? (
-    <BeatLoader color='#353a40' />
-  ) : (
+  if (loading) return <Loader />;
+
+  const raceContent = (
     <div>
       <Breadcrumb elements={['races', `${circuitData.circuitId}`]} />
       <div className='race-details'>

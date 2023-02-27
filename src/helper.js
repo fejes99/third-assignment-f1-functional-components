@@ -61,5 +61,6 @@ export const nationalityToCountryCodeConverter = (countryList, nationality) => {
       .toLowerCase()
       .includes(nationality.toLowerCase())
   );
+
   return filteredCountry ? filteredCountry.alpha_2_code : '';
 };

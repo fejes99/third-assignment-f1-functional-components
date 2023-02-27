@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
 import './Constructors.css';
 import { constructorDetailsHandler, constructorsFilter } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import YearPicker from '../../components/YearPicker/YearPicker';
+import Loader from '../../components/Loader/Loader';
 
 const Constructors = () => {
   const [constructorStandings, setConstructorStandings] = useState([]);
@@ -18,8 +18,9 @@ const Constructors = () => {
 
   const fetchConstructors = () => {
     axios.get(`http://ergast.com/api/f1/${year}/constructorStandings.json`).then((res) => {
-      const data = res.data.MRData.StandingsTable.StandingsLists[0];
-      setConstructorStandings(data.ConstructorStandings);
+      setConstructorStandings(
+        res.data.MRData.StandingsTable.StandingsLists[0].ConstructorStandings
+      );
       setLoading(false);
     });
   };
@@ -33,10 +34,11 @@ const Constructors = () => {
     setLoading(true);
   };
 
+  if (loading) return <Loader />;
+
   const standings = constructorsFilter(constructorStandings, query);
-  const constructorsTable = loading ? (
-    <BeatLoader color='#353a40' />
-  ) : (
+
+  const constructorsTable = (
     <table>
       <thead>
         <tr>

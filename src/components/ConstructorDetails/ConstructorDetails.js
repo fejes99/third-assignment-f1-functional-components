@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BeatLoader } from 'react-spinners';
 
 import './ConstructorDetails.css';
 import {
@@ -10,6 +9,7 @@ import {
   sumPoints,
 } from '../../helper';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
+import Loader from '../Loader/Loader';
 
 const ConstructorDetails = ({ match, location }) => {
   const [constructor, setConstructor] = useState(null);
@@ -27,31 +27,30 @@ const ConstructorDetails = ({ match, location }) => {
     const query = new URLSearchParams(location.search);
     const year = query.get('year');
 
-    Promise.all([
-      axios.get(`http://ergast.com/api/f1/${year}/constructors/${id}/constructorStandings.json`),
-      axios.get(`http://ergast.com/api/f1/${year}/constructors/${id}/results.json`),
-      axios.get(
-        'https://raw.githubusercontent.com/Dinuks/country-nationality-list/master/countries.json'
-      ),
-    ]).then((res) => {
+    let endpoints = [
+      `http://ergast.com/api/f1/${year}/constructors/${id}/constructorStandings.json`,
+      `http://ergast.com/api/f1/${year}/constructors/${id}/results.json`,
+      'https://raw.githubusercontent.com/Dinuks/country-nationality-list/master/countries.json',
+    ];
+
+    axios.all(endpoints.map((endpoint) => axios.get(endpoint))).then((res) => {
       const constructor =
         res[0].data.MRData.StandingsTable.StandingsLists[0].ConstructorStandings[0];
-      const results = res[1].data.MRData.RaceTable.Races;
       const countryCode = nationalityToCountryCodeConverter(
         res[2].data,
         constructor.Constructor.nationality
       );
       setConstructor(constructor);
-      setResults(results);
+      setResults(res[1].data.MRData.RaceTable.Races);
       setYear(year);
       setCountryCode(countryCode);
       setLoading(false);
     });
   };
 
-  const constructorContent = loading ? (
-    <BeatLoader color='#353a40' />
-  ) : (
+  if (loading) return <Loader />;
+
+  const constructorContent = (
     <div>
       <Breadcrumb elements={['constructors', `${constructor.Constructor.constructorId}`]} />
       <div className='constructor-details'>
@@ -162,6 +161,7 @@ const ConstructorDetails = ({ match, location }) => {
       </table>
     </div>
   );
+
   return <div className='container'>{constructorContent}</div>;
 };
 
