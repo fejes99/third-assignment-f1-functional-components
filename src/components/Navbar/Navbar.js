@@ -3,24 +3,24 @@ import React from 'react';
 import './Navbar.css';
 import NavbarItem from './NavbarItem/NavbarItem';
 
-const navigationItems = [
-  {
-    name: 'Drivers',
-    link: '/drivers',
-  },
-  {
-    name: 'Constructors',
-    link: '/constructors',
-  },
-  {
-    name: 'Races',
-    link: '/races',
-  },
-];
+const Navbar = ({ year }) => {
+  const navigationItems = [
+    {
+      name: 'Drivers',
+      link: `/drivers?year=${year}`,
+    },
+    {
+      name: 'Constructors',
+      link: `/constructors?year=${year}`,
+    },
+    {
+      name: 'Races',
+      link: `/races?year=${year}`,
+    },
+  ];
 
-const Navbar = () => {
   let navbarItems = navigationItems.map((item) => {
-    return <NavbarItem key={item.name} name={item.name} link={item.link} />;
+    return <NavbarItem key={item.name} name={item.name} link={item.link} year={year} />;
   });
   return (
     <div className='navbar'>

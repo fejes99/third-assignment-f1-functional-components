@@ -14,7 +14,7 @@ const RaceDetails = ({ match, location }) => {
   const [qualiResults, setQualiResults] = useState([]);
   const [raceResults, setRaceResults] = useState([]);
   const [circuitData, setCircuitData] = useState(null);
-  const [year, setYear] = useState(null);
+  const [year, setYear] = useState(2022);
   const [countryCode, setCountryCode] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,8 +24,7 @@ const RaceDetails = ({ match, location }) => {
 
   const fetchRaceDetails = () => {
     const { id } = match.params;
-    const query = new URLSearchParams(location.search);
-    const year = query.get('year');
+    const year = new URLSearchParams(location.search).get('year');
 
     let endpoints = [
       `https://ergast.com/api/f1/${year}/${id}/qualifying.json`,
@@ -52,7 +51,7 @@ const RaceDetails = ({ match, location }) => {
 
   const raceContent = (
     <div>
-      <Breadcrumb elements={['races', `${circuitData.circuitId}`]} />
+      <Breadcrumb year={year} elements={['races', `${circuitData.circuitId}`]} />
       <div className='race-details'>
         <div className='race-profile'>
           <h1>{circuitData.circuitName}</h1>

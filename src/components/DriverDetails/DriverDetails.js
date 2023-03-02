@@ -14,7 +14,7 @@ import Loader from '../../components/Loader/Loader';
 const DriverDetails = ({ match, location }) => {
   const [driver, setDriver] = useState(null);
   const [results, setResults] = useState(null);
-  const [year, setYear] = useState(null);
+  const [year, setYear] = useState(2022);
   const [countryCode, setCountryCode] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,8 +24,7 @@ const DriverDetails = ({ match, location }) => {
 
   const fetchDriverDetails = () => {
     const { id } = match.params;
-    const query = new URLSearchParams(location.search);
-    const year = query.get('year');
+    const year = new URLSearchParams(location.search).get('year');
 
     let endpoints = [
       `http://ergast.com/api/f1/${year}/drivers/${id}/driverStandings.json`,
@@ -48,7 +47,7 @@ const DriverDetails = ({ match, location }) => {
 
   const driverContent = (
     <div>
-      <Breadcrumb elements={['drivers', `${driver.Driver.driverId}`]} />
+      <Breadcrumb year={year} elements={['drivers', `${driver.Driver.driverId}`]} />
       <div className='driver-details'>
         <div className='driver-profile'>
           <img

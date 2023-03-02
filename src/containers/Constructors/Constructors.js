@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 import './Constructors.css';
 import { constructorDetailsHandler, constructorsFilter } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import YearPicker from '../../components/YearPicker/YearPicker';
 import Loader from '../../components/Loader/Loader';
 
-const Constructors = () => {
+const Constructors = ({ yearHandler, location }) => {
   const [constructorStandings, setConstructorStandings] = useState([]);
   const [year, setYear] = useState(2022);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setYear(new URLSearchParams(location.search).get('year'));
     fetchConstructors();
   }, [year]);
 
@@ -29,8 +31,8 @@ const Constructors = () => {
     setQuery(event.target.value);
   };
 
-  const yearHandler = (event) => {
-    setYear(event.target.value);
+  const yearPickerHandler = (event) => {
+    yearHandler(event.target.value);
     setLoading(true);
   };
 
@@ -71,10 +73,10 @@ const Constructors = () => {
 
   return (
     <div className='container'>
-      <Breadcrumb elements={['constructors']} />
+      <Breadcrumb year={year} elements={['constructors']} />
       <div className='header'>
         <h1 className='title'>
-          <YearPicker year={year} onChange={yearHandler} /> Constructor Standings
+          <YearPicker year={year} onChange={yearPickerHandler} /> Constructor Standings
         </h1>
         <input
           className='navbar-search'
@@ -89,4 +91,4 @@ const Constructors = () => {
   );
 };
 
-export default Constructors;
+export default withRouter(Constructors);

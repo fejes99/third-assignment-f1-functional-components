@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 import './Drivers.css';
 import { constructorDetailsHandler, driverDetailsHandler, driversFilter } from '../../helper';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import YearPicker from '../../components/YearPicker/YearPicker';
 import Loader from '../../components/Loader/Loader';
 
-const Drivers = () => {
+const Drivers = ({ yearHandler, location }) => {
   const [driverStandings, setDriverStandings] = useState([]);
   const [year, setYear] = useState(2022);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setYear(new URLSearchParams(location.search).get('year'));
     fetchDrivers();
   }, [year]);
 
@@ -27,8 +29,8 @@ const Drivers = () => {
     setQuery(event.target.value);
   };
 
-  const yearHandler = (event) => {
-    setYear(event.target.value);
+  const yearPickerHandler = (event) => {
+    yearHandler(event.target.value);
     setLoading(true);
   };
 
@@ -78,10 +80,10 @@ const Drivers = () => {
 
   return (
     <div className='container'>
-      <Breadcrumb elements={['drivers']} />
+      <Breadcrumb year={year} elements={['drivers']} />
       <div className='header'>
         <h1 className='title'>
-          <YearPicker year={year} onChange={yearHandler} /> Driver Standings
+          <YearPicker year={year} onChange={yearPickerHandler} /> Driver Standings
         </h1>
 
         <input
@@ -97,4 +99,4 @@ const Drivers = () => {
   );
 };
 
-export default Drivers;
+export default withRouter(Drivers);

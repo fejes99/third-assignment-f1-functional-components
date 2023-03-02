@@ -14,7 +14,7 @@ import Loader from '../Loader/Loader';
 const ConstructorDetails = ({ match, location }) => {
   const [constructor, setConstructor] = useState(null);
   const [results, setResults] = useState(null);
-  const [year, setYear] = useState(null);
+  const [year, setYear] = useState(2022);
   const [countryCode, setCountryCode] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,8 +24,7 @@ const ConstructorDetails = ({ match, location }) => {
 
   const fetchConstructorDetails = () => {
     const { id } = match.params;
-    const query = new URLSearchParams(location.search);
-    const year = query.get('year');
+    const year = new URLSearchParams(location.search).get('year');
 
     let endpoints = [
       `http://ergast.com/api/f1/${year}/constructors/${id}/constructorStandings.json`,
@@ -52,7 +51,10 @@ const ConstructorDetails = ({ match, location }) => {
 
   const constructorContent = (
     <div>
-      <Breadcrumb elements={['constructors', `${constructor.Constructor.constructorId}`]} />
+      <Breadcrumb
+        year={year}
+        elements={['constructors', `${constructor.Constructor.constructorId}`]}
+      />
       <div className='constructor-details'>
         <div className='constructor-stats'>
           <div className='constructor-stats__name'>

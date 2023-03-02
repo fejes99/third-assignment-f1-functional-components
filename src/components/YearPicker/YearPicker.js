@@ -12,7 +12,7 @@ const YearPicker = ({ year, onChange }) => {
   }
 
   return (
-    <select className='year-picker' value={year} onChange={(event) => onChange(event)}>
+    <select className='year-picker' value={year || 2022} onChange={(event) => onChange(event)}>
       {options}
     </select>
   );

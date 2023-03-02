@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router';
 import './Races.css';
 import {
   getFormattedDate,
@@ -12,13 +13,14 @@ import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import YearPicker from '../../components/YearPicker/YearPicker';
 import Loader from '../../components/Loader/Loader';
 
-const Races = () => {
+const Races = ({ yearHandler, location }) => {
   const [raceStandings, setRaceStandings] = useState([]);
   const [year, setYear] = useState(2022);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setYear(new URLSearchParams(location.search).get('year'));
     fetchRaces();
   }, [year]);
 
@@ -33,8 +35,8 @@ const Races = () => {
     setQuery(event.target.value);
   };
 
-  const yearHandler = (event) => {
-    setYear(event.target.value);
+  const yearPickerHandler = (event) => {
+    yearHandler(event.target.value);
     setLoading(true);
   };
 
@@ -89,11 +91,11 @@ const Races = () => {
 
   return (
     <div className='container'>
-      <Breadcrumb elements={['races']} />
+      <Breadcrumb year={year} elements={['races']} />
 
       <div className='header'>
         <h1 className='title'>
-          <YearPicker year={year} onChange={yearHandler} /> Race Results
+          <YearPicker year={year} onChange={yearPickerHandler} /> Race Results
         </h1>
         <input
           className='navbar-search'
@@ -108,4 +110,4 @@ const Races = () => {
   );
 };
 
-export default Races;
+export default withRouter(Races);
